@@ -1,6 +1,6 @@
 # NodeMCU setup
 ## Flashing the firmware
-According to the packages you want to use on NodeMCU, you must build and install a new firmware.
+Depending on the packages you want to use on NodeMCU, you must build and install a new firmware.
 The file firmware.bin is the firmware currently used for this project.
 To install it, make sure tou have python3 and pip installed. Then run the following commands
 
