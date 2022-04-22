@@ -9,8 +9,8 @@
 
 #define REDLED      1,0
 #define GREENLED    4,7
-#define SW2RK       1,1
-#define SW1LK       2,1
+#define SW2         1,1
+#define SW1         2,1
 
 typedef enum {input, output, inPullUp, inPullDown} pinMode_t;
 
@@ -20,5 +20,8 @@ uint8_t pinRead(uint8_t port, uint8_t bit);
 
 void pinWrite(uint8_t port, uint8_t bit, uint8_t value);
 
+void pinToggle(uint8_t port, uint8_t bit);
+
+void pinInit();
 
 #endif
