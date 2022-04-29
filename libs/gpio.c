@@ -9,20 +9,25 @@ void pinMode(uint8_t port, uint8_t bit, pinMode_t mode){
     
     uint8_t mask = 0x01 << bit;
 
-    
-
     if (mode == input) {
-        *PDIR[port] &= ~mask;
+        *(PSEL[port]) &= ~mask;
+        *(PDIR[port]) &= ~mask;
     }
 
     if (mode == output){
-        *PDIR[port] |= mask;
+        *(PSEL[port]) &= ~mask;
+        *(PDIR[port]) |= mask;
     }
 
     if (mode == inPullUp){
+        *(PSEL[port]) &= ~mask;
         *(PDIR[port]) &= ~mask;
         *(PREN[port]) |= mask;
         *(POUT[port]) |= mask;
+    }
+
+    if (mode == module){
+        *(PSEL[port]) |= mask;
     }
 }
 
@@ -49,8 +54,8 @@ void pinInit(){
 
     pinMode(GREENLED, output);
     pinMode(REDLED, output);
-    pinMode(SW1, inPullUp);
-    pinMode(SW2, inPullUp);
+    pinMode(RIGHTBUTTON, inPullUp);
+    pinMode(LEFTBUTTON, inPullUp);
 
 }
 
