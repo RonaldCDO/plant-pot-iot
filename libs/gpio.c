@@ -1,5 +1,6 @@
 #include "gpio.h"
  
+volatile uint8_t * PSEL[] = {&P1SEL, &P1SEL, &P2SEL, &P3SEL, &P4SEL};
 volatile uint8_t * PDIR[] = { &P1DIR, &P1DIR, &P2DIR, &P3DIR, &P4DIR};
 volatile uint8_t * PREN[] = { &P1REN, &P1REN, &P2REN, &P3REN, &P4REN};
 volatile uint8_t * POUT[] = { &P1OUT, &P1OUT, &P2OUT, &P3OUT, &P4OUT};
@@ -9,20 +10,25 @@ void pinMode(uint8_t port, uint8_t bit, pinMode_t mode){
     
     uint8_t mask = 0x01 << bit;
 
-    
-
     if (mode == input) {
-        *PDIR[port] &= ~mask;
+        *(PSEL[port]) &= ~mask;
+        *(PDIR[port]) &= ~mask;
     }
 
     if (mode == output){
-        *PDIR[port] |= mask;
+        *(PSEL[port]) &= ~mask;
+        *(PDIR[port]) |= mask;
     }
 
     if (mode == inPullUp){
+        *(PSEL[port]) &= ~mask;
         *(PDIR[port]) &= ~mask;
         *(PREN[port]) |= mask;
         *(POUT[port]) |= mask;
+    }
+
+    if (mode == module){
+        *(PSEL[port]) |= mask;
     }
 }
 
@@ -49,8 +55,8 @@ void pinInit(){
 
     pinMode(GREENLED, output);
     pinMode(REDLED, output);
-    pinMode(SW1, inPullUp);
-    pinMode(SW2, inPullUp);
+    pinMode(RIGHTBUTTON, inPullUp);
+    pinMode(LEFTBUTTON, inPullUp);
 
 }
 
