@@ -59,6 +59,18 @@ void wait(uint16_t time, time_unit_t unit){
     TA2CTL = MC__STOP;
 }
 
+uint16_t ta0Config(clock_t clk, uint8_t numOfConversions, uint16_t frequency){
+
+    if (clk == smclk){
+        TA0CTL = TASSEL__SMCLK | MC__UP | TACLR;
+    } else {
+        TA0CTL = TASSEL__ACLK | MC__UP | TACLR;
+    }
+    TA0CCR0 = TASSEL__SMCLK/(frequency*numOfConversions);
+    TA0CCTL0 = CCIE;
+}
+
+
 #pragma vector = TIMER2_A0_VECTOR
 __interrupt void Timer2_CCR0_ISR(){
     count--;
