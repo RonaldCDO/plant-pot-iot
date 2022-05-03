@@ -9,7 +9,8 @@
 
 #define TCLK2 10,ms
 
-void spiConfig (uint8_t pol, uint8_t pha, uint8_t MSBfirst, uint8_t isMaster);
+void spiConfigUCB0 (uint8_t pol, uint8_t phase, uint8_t MSBfirst, uint8_t isMaster);
 uint8_t spiTransfer (uint8_t byte);
+void spiConfigUCB1EchoTest();
 
 #endif
