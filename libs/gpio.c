@@ -1,5 +1,6 @@
 #include "gpio.h"
  
+volatile uint8_t * PSEL[] = {&P1SEL, &P1SEL, &P2SEL, &P3SEL, &P4SEL};
 volatile uint8_t * PDIR[] = { &P1DIR, &P1DIR, &P2DIR, &P3DIR, &P4DIR};
 volatile uint8_t * PREN[] = { &P1REN, &P1REN, &P2REN, &P3REN, &P4REN};
 volatile uint8_t * POUT[] = { &P1OUT, &P1OUT, &P2OUT, &P3OUT, &P4OUT};
