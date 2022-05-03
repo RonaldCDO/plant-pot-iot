@@ -7,12 +7,12 @@
 
 #define BIT(n) (1) << n
 
-#define REDLED      1,0
-#define GREENLED    4,7
-#define SW2         1,1
-#define SW1         2,1
+#define REDLED       1,0
+#define GREENLED     4,7
+#define LEFTBUTTON   1,1
+#define RIGHTBUTTON  2,1
 
-typedef enum {input, output, inPullUp, inPullDown} pinMode_t;
+typedef enum {input, output, inPullUp, inPullDown, module} pinMode_t;
 
 void pinMode(uint8_t port, uint8_t bit, pinMode_t mode);
 
