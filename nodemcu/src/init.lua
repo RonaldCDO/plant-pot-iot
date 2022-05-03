@@ -18,10 +18,8 @@ server = net.createServer(net.TCP, 120)
 function receiver(sck, data)
   if string.find(data, "LED ON")  then
    sck:send("\r\nLED ON")
-   gpio.write(LEDpin, gpio.HIGH)
   elseif string.find(data, "LED OFF")  then
    sck:send("\r\nLED OFF")
-   gpio.write(LEDpin, gpio.LOW)
   elseif string.find(data, "EXIT")  then
    sck:close()
   else
