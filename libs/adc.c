@@ -39,7 +39,7 @@ __interrupt void ADC_TRIGGER(void){
 
 }
 
-#PRAGMA vector = ADC12_VECTOR
+#pragma vector = ADC12_VECTOR
 __interrupt void ADC_RESULT(void){
     adcResult[0] = ADC12MEM0;
     adcResult[1] = ADC12MEM1;
