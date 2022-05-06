@@ -13,7 +13,7 @@ uint16_t timerNew(uint32_t time, time_unit_t unit){
 
     if (unit == sec) time *= 1000;
     if (unit == min) time *= (1000 * 60);
-    if (unit = hour) time *= (1000 * 60 * 60);
+    if (unit == hour) time *= (1000 * 60 * 60);
     
     vTimer[timerCount++] = time;
 
@@ -58,6 +58,21 @@ void wait(uint16_t time, time_unit_t unit){
     }
     TA2CTL = MC__STOP;
 }
+
+void ta0Config(clock_t clk){
+
+    if (clk == smclk){
+        TA0CTL = TASSEL__SMCLK | MC__UP | TACLR;
+        TA0CCR0 = TASSEL__SMCLK/100;
+    } else {
+        TA0CTL = TASSEL__ACLK | MC__UP | TACLR;
+        TA0CCR0 = TASSEL__ACLK/100;
+    }
+    TA0CCTL1 = OUTMOD_6;
+    TA0CCR1 = TA0CCR0/2;
+//    TA0CCTL0 = CCIE;
+}
+
 
 #pragma vector = TIMER2_A0_VECTOR
 __interrupt void Timer2_CCR0_ISR(){
