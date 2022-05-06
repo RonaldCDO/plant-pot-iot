@@ -1,5 +1,6 @@
 #include "adc.h"
 #include "timers.h"
+#include "gpio.h"
 
 uint16_t adcResult[2];
 
@@ -16,7 +17,8 @@ void adc12Config(){
 
 	ADC12CTL2 =  ADC12RES_2;                // 12BITS mode
 
-	P6SEL |= BIT0 | BIT1;                   // 6.0, 6.1 from module
+	pinMode(6,0, module);
+	pinMode(6,1, module);
 
 	ADC12MCTL0 = ADC12SREF_0      	|  		// Use AVSS and AVCC as reference
 			     ADC12INCH_0;         		// Input in P6.0
