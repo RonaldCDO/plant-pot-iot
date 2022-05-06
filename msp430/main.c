@@ -120,22 +120,6 @@ __interrupt void __ucb0_interrupt(void)
 
         // Se receber um dummy, tratar de acordo com o last_command
         if (last_command == MEASURE_COMMAND) {
-//            switch (measurements_idx)
-//            {
-//            case 0:
-//                UCB0TXBUF = temperature;
-//                break;
-//            case 1:
-//                UCB0TXBUF = luminosity_level;
-//                break;
-//            case 2:
-//                UCB0TXBUF = umidity;
-//                break;
-//            default:
-//                UCB0TXBUF = DUMMY_BYTE;
-//                break;
-//            }
-
             if (measurements_idx == 2) {
                 UCB0TXBUF = temperature;
             } else if (measurements_idx == 1) {
