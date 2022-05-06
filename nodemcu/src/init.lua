@@ -31,23 +31,32 @@ gpio.mode(8, gpio.INPUT, gpio.PULLUP)
 server = net.createServer(net.TCP, 120)
 
 function receiver(sck, data)
+  sck:send("\r\nCOMANDO: ")
+  sck:send(data)
+  sck:send("\r\n")
   if string.find(data, "MEDIR")  then
    spi.send(1, 'M')
+   -- Inicia comunicação
+   spi.recv(1, 1)
+   -- Receber os dados
    local temperature = spi.recv(1, 1)
-   sck:send("Temperatura:")
+   sck:send("Temperatura:\r\n")
    sck:send(tostring(temperature))
+   sck:send("\r\n")
    local luminosity = spi.recv(1, 1)
-   sck:send("Luminosidade:")
+   sck:send("Luminosidade:\r\n")
    sck:send(tostring(luminosity))
+   sck:send("\r\n")
    local umidity = spi.recv(1, 1)
-   sck:send("Umidade:")
+   sck:send("Umidade:\r\n")
    sck:send(tostring(umidity))
+   sck:send("\r\n")
   elseif string.find(data, "IRRIGAR")  then
    spi.send(1, 'I')
-  elseif string.find(data, "EXIT")  then
+  elseif string.find(data, "SAIR")  then
    sck:close()
   else
-   sck:send("\r\nCommand Not Found...!!!")
+   sck:send("\r\nCOMANDO DESCONHECIDO!")
   end
 end
 
@@ -57,5 +66,6 @@ if server then
   conn:send("Ola!\r\n")
   conn:send("1. Envie \"MEDIR\" para receber as medidas de temperatura, luminosidade e umidade do solo\r\n")
   conn:send("2. Envie \"IRRIGAR\" para irrigar a planta agora\r\n")
+  conn:send("3. Envie \"SAIR\" para finalizar a sessão\r\n")
   end)
 end
