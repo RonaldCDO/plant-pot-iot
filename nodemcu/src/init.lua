@@ -46,11 +46,25 @@ function receiver(sck, data)
    sck:send("\r\n")
    local luminosity = spi.recv(1, 1)
    sck:send("Luminosidade:\r\n")
-   sck:send(string.byte(luminosity))
+   local level_number = string.byte(luminosity)
+   if level_number >= 3 then
+    sck:send("Escuro")
+   elseif level_number == 2 then
+    sck:send("Pouco iluminado")
+   elseif level_number == 1 then
+    sck:send("Iluminado")
+   else 
+    sck:send("Muito iluminado")
+   end
    sck:send("\r\n")
    local umidity = spi.recv(1, 1)
    sck:send("Umidade:\r\n")
-   sck:send(string.byte(umidity))
+   local umidity_number = string.byte(umidity)
+   if umidity_number <= 1 then
+    sck:send("Seco")
+   else 
+    sck:send("Umido")
+   end
    sck:send("\r\n")
   elseif string.find(data, "IRRIGAR")  then
    spi.send(1, 'I')
