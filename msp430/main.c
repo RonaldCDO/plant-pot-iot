@@ -1,5 +1,12 @@
 #include <msp430.h> 
 #include "libs/spi.h"
+#include "libs/adc.h"
+#include "libs/timers.h"
+#include "libs/gpio.h"
+
+float tempCalc(uint16_t digitalResult){
+    return (((digitalResult * 330)/4096)-273.15);
+}
 
 #define DUMMY_BYTE 0xFF
 
@@ -29,7 +36,15 @@ int main(void)
 	// Habilita a interrupção de recepção no UCB0
 	UCB0IE = UCRXIE;
 
-	 __enable_interrupt();
+    // Configura o clock de trigger do ADC12
+    ta0Config(smclk);
+    // Configura o ADC12
+    adc12Config();
+
+    pinInit();
+    pinMode(2, 0, input);
+
+    __enable_interrupt();
 
 	while(1);
 
