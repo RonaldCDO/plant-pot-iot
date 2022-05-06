@@ -37,7 +37,8 @@ function receiver(sck, data)
   if string.find(data, "MEDIR")  then
    spi.send(1, 'M')
    -- Inicia comunicação
-   spi.recv(1, 1)
+  --  spi.recv(1, 1)
+  sck:send("Medidas:\r\n")
    -- Receber os dados
    local temperature = spi.recv(1, 1)
    sck:send("Temperatura:\r\n")

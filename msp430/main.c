@@ -58,10 +58,27 @@ int main(void)
 
     pinInit();
     pinMode(2, 0, input);
+    pinMode(2, 3, output);
+    pinMode(1, 2, output);
+    pinWrite(2, 3, 0);
+    pinWrite(1, 2, 0);
 
     __enable_interrupt();
 
-	while(1);
+	while(1) {
+	    if (irrigating) {
+	        pinWrite(2, 3, 1);
+	        pinWrite(1, 2, 1);
+	        wait(5, sec);
+	        pinWrite(2, 3, 0);
+	        pinWrite(1, 2, 0);
+	        irrigating = 0;
+	        // Configura o SPI no UCB0
+            spiConfigUCB0(0, 0, 1, 0);
+            // Habilita a interrupção de recepção no UCB0
+            UCB0IE = UCRXIE;
+	    }
+	}
 
 	return 0;
 }
@@ -78,7 +95,7 @@ __interrupt void __ucb0_interrupt(void)
             // Salva as medidas
             temperature = tempCalc(adcResult[0]);
             luminosity_level = luminosityLevelCalc(adcResult[1]);
-            umidity = UMIDITY_PIN_READ;
+            umidity = UMIDITY_PIN_READ + 1;
 
             // Prepara o comando
             last_command = MEASURE_COMMAND;
@@ -103,20 +120,28 @@ __interrupt void __ucb0_interrupt(void)
 
         // Se receber um dummy, tratar de acordo com o last_command
         if (last_command == MEASURE_COMMAND) {
-            switch (measurements_idx)
-            {
-            case 0:
+//            switch (measurements_idx)
+//            {
+//            case 0:
+//                UCB0TXBUF = temperature;
+//                break;
+//            case 1:
+//                UCB0TXBUF = luminosity_level;
+//                break;
+//            case 2:
+//                UCB0TXBUF = umidity;
+//                break;
+//            default:
+//                UCB0TXBUF = DUMMY_BYTE;
+//                break;
+//            }
+
+            if (measurements_idx == 2) {
                 UCB0TXBUF = temperature;
-                break;
-            case 1:
-                UCB0TXBUF = luminosity_level;
-                break;
-            case 2:
+            } else if (measurements_idx == 1) {
                 UCB0TXBUF = umidity;
-                break;
-            default:
-                UCB0TXBUF = DUMMY_BYTE;
-                break;
+            } else {
+                UCB0TXBUF = luminosity_level;
             }
 
             measurements_idx++;
