@@ -2,8 +2,6 @@
 #include "timers.h"
 #include "gpio.h"
 
-uint16_t adcResult[2];
-
 void adc12Config(){
     
     ADC12CTL0 &= ~ADC12ENC;					// clear ENC bit
@@ -36,5 +34,4 @@ void adc12Config(){
 __interrupt void ADC_RESULT(void){
     adcResult[0] = ADC12MEM0;
     adcResult[1] = ADC12MEM1;
-
 }

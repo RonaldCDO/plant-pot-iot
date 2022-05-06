@@ -47,13 +47,13 @@ void wait(uint16_t time, time_unit_t unit){
             count = time;
             TA2CCR0 = 0x8000 -1;
             TA2CCTL0 = CCIE;
-            while(count);
+            while(count > 0);
         }
         if (unit == min){
             count = time * 60;
             TA2CCR0 = 0x8000 -1;
             TA2CCTL0 = CCIE;
-            while(count);
+            while(count > 0);
         }
     }
     TA2CTL = MC__STOP;

@@ -1,1 +1,6 @@
 .venv/
+.launches/
+.settings/
+Debug/
+targetConfigs/
+*.cmd
