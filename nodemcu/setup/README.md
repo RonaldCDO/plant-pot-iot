@@ -39,3 +39,17 @@ nodemcu-tool upload <filename>
 ```
 
 If the code is composed by more than one file, remember to also upload the other files!
+
+# Information about the firmware
+The current firmware was built on https://nodemcu-build.com/ and includes the following modules:
+- file 
+- gpio 
+- i2c 
+- net 
+- node 
+- spi 
+- tmr 
+- uart 
+- wifi
+
+The firmware uses integer types.
