@@ -1,6 +1,5 @@
 wifi = require('wifi')
 net = require('net')
--- spi = require('spi')
 
 --Wifi Setup
 wifi.setmode(wifi.SOFTAP)
@@ -23,7 +22,6 @@ end
 -- Mode: master
 -- Data: 8 bits
 -- CLOCK: 1MHz
--- HalfDuplex (3 pin SPI)
 -- Ports: CLK -> GPIO14, MOSI -> GPIO13, MISO -> GPIO12
 spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_HIGH, spi.DATABITS_8, 400, spi.FULLDUPLEX)
 -- we won't be using the HSPI/CS line, so disable it again
@@ -44,6 +42,8 @@ function receiver(sck, data)
    local umidity = spi.recv(1, 1)
    sck:send("Umidade:")
    sck:send(tostring(umidity))
+  elseif string.find(data, "IRRIGAR")  then
+   spi.send(1, 'I')
   elseif string.find(data, "EXIT")  then
    sck:close()
   else
@@ -56,5 +56,6 @@ if server then
   conn:on("receive", receiver)
   conn:send("Ola!\r\n")
   conn:send("1. Envie \"MEDIR\" para receber as medidas de temperatura, luminosidade e umidade do solo\r\n")
+  conn:send("2. Envie \"IRRIGAR\" para irrigar a planta agora\r\n")
   end)
 end
