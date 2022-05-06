@@ -1,6 +1,6 @@
 #include "spi.h"
 
-void spiConfigUCB0 (uint8_t pol, uint8_t pha, uint8_t MSBfirst, uint8_t isMaster){
+void spiConfigUCB0 (uint8_t pol, uint8_t phase, uint8_t MSBfirst, uint8_t isMaster){
 
     UCB0CTL1 = UCSWRST;                     // Enable SW reset
     UCB0CTL0 = UCMODE_0 | UCSYNC;           // SPI mode 0, synchronous
