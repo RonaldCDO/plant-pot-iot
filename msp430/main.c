@@ -4,9 +4,23 @@
 #include "libs/timers.h"
 #include "libs/gpio.h"
 
-float tempCalc(uint16_t digitalResult){
-    return (((digitalResult * 330)/4096)-273.15);
+unsigned char tempCalc(uint16_t digitalResult){
+    volatile float voltage = ((float) digitalResult * 3.3 / 4096);
+    return voltage * 100 - 273;
 }
+
+unsigned char luminosityLevelCalc(uint16_t digitalResult) {
+    if (digitalResult <= 1000) {
+        return 0;
+    } else if (digitalResult <= 2000) {
+        return 1;
+    } else if (digitalResult <= 3000) {
+        return 2;
+    } else {
+        return 3;
+    }
+}
+
 
 #define DUMMY_BYTE 0xFF
 
@@ -18,10 +32,11 @@ float tempCalc(uint16_t digitalResult){
 volatile unsigned char last_command = 0;
 
 // MEASUREMENTS =====================================
-volatile unsigned char temperature = 'A';
+volatile unsigned char temperature = '?';
 // 0, 1 ou 2, do mais escuro ao mais claro
-volatile unsigned char luminosity_level = 'B';
-#define umidity ((P2IN & BIT0) != 0? 1 : 0)
+volatile unsigned char luminosity_level = '?';
+volatile unsigned char umidity = '?';
+#define UMIDITY_PIN_READ ((P2IN & BIT0) != 0? 1 : 0)
 volatile unsigned char measurements_idx = 0;
 
 // IRRIGATE =========================================
@@ -60,6 +75,12 @@ __interrupt void __ucb0_interrupt(void)
         received_byte = UCB0RXBUF;
 
         if (received_byte == MEASURE_COMMAND) {
+            // Salva as medidas
+            temperature = tempCalc(adcResult[0]);
+            luminosity_level = luminosityLevelCalc(adcResult[1]);
+            umidity = UMIDITY_PIN_READ;
+
+            // Prepara o comando
             last_command = MEASURE_COMMAND;
             measurements_idx = 0;
             UCB0TXBUF = DUMMY_BYTE;

@@ -11,7 +11,7 @@ void spiConfigUCB0 (uint8_t pol, uint8_t phase, uint8_t MSBfirst, uint8_t isMast
     }
     if (pol)
         UCB0CTL0 |= UCCKPL;                 // Polarity high
-    if (pha)
+    if (phase)
         UCB0CTL0 |= UCCKPH;                 // Phase high
     if (MSBfirst)
         UCB0CTL0 |= UCMSB;                  // MSB first
