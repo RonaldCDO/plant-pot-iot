@@ -21,7 +21,6 @@ end
 --SPI Setup
 -- Mode: master
 -- Data: 8 bits
--- CLOCK: 1MHz
 -- Ports: CLK -> GPIO14, MOSI -> GPIO13, MISO -> GPIO12
 spi.setup(1, spi.MASTER, spi.CPOL_LOW, spi.CPHA_HIGH, spi.DATABITS_8, 400, spi.FULLDUPLEX)
 -- we won't be using the HSPI/CS line, so disable it again
